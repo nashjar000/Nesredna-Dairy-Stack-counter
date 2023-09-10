@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andersen Dairy Stack Planner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Andersen Dairy Stack Planner</h1>
+    <form id="orderForm">
+        <table>
+            <tr>
+                <td>Organic Whole Milk</td>
+                <td><input type="number" name="Organic Whole Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Organic 2% Milk</td>
+                <td><input type="number" name="Organic 2% Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Winco Whole Milk</td>
+                <td><input type="number" name="Winco Whole Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Winco 2% Milk</td>
+                <td><input type="number" name="Winco 2% Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Winco 1% Milk</td>
+                <td><input type="number" name="Winco 1% Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Winco Non-fat Milk</td>
+                <td><input type="number" name="Winco Non-fat Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Winco Chocolate Milk</td>
+                <td><input type="number" name="Winco Chocolate Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Winco Chocolate Milk 1/2 gallon</td>
+                <td><input type="number" name="Winco Chocolate Milk 1/2 gallon" min="0"></td>
+            </tr>
+            <tr>
+                <td>Dairy Gold Chocolate Milk</td>
+                <td><input type="number" name="Dairy Gold Chocolate Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Dairy Gold 1/2 gallon Chocolate Milk</td>
+                <td><input type="number" name="Dairy Gold 1/2 gallon Chocolate Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Andersen Whole Milk</td>
+                <td><input type="number" name="Andersen Whole Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Andersen 2% Milk</td>
+                <td><input type="number" name="Andersen 2% Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Andersen 1% Milk</td>
+                <td><input type="number" name="Andersen 1% Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Andersen Non-fat Milk</td>
+                <td><input type="number" name="Andersen Non-fat Milk" min="0"></td>
+            </tr>
+            <tr>
+                <td>Hawaiian Juice</td>
+                <td><input type="number" name="Hawaiian Juice" min="0"></td>
+            </tr>
+            <tr>
+                <td>Strawberry Juice</td>
+                <td><input type="number" name="Strawberry Juice" min="0"></td>
+            </tr>
+            <tr>
+                <td>Apple Juice</td>
+                <td><input type="number" name="Apple Juice" min="0"></td>
+            </tr>
+            <tr>
+                <td>Guava Juice</td>
+                <td><input type="number" name="Guava Juice" min="0"></td>
+            </tr>
+            <tr>
+                <td>Citrus Juice</td>
+                <td><input type="number" name="Citrus Juice" min="0"></td>
+            </tr>
+            <tr>
+                <td>Mango Juice</td>
+                <td><input type="number" name="Mango Juice" min="0"></td>
+            </tr>
+            <tr>
+                <td>Tropical Juice</td>
+                <td><input type="number" name="Tropical Juice" min="0"></td>
+            </tr>
+            <tr>
+                <td>Island Juice</td>
+                <td><input type="number" name="Island Juice" min="0"></td>
+            </tr>
+            <tr>
+                <td>Tea</td>
+                <td><input type="number" name="Tea" min="0"></td>
+            </tr>
+            <tr>
+                <td>Orange Juice</td>
+                <td><input type="number" name="Orange Juice" min="0"></td>
+            </tr>
+        </table>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="generatedList">
+        <div id="stacksLeftContainer">Total Stacks Left to Grab: <span id="stacksLeft">0</span></div>
+        <div id="totalCasesContainer">Total Cases: <span id="totalCases">0</span></div>
+    </div>
+
+    <div id="summary">
+        <p>Total Stacks: <span id="stackCounts"></span></p>
+        <!-- <p>Total Cases Left: <span id="casesLeft"></span></p> -->
+        <p>Products Order:</p>
+        <ul id="productList"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
