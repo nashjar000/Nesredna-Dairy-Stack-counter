@@ -98,5 +98,27 @@ orderForm.addEventListener("submit", function (event) {
     productListElement.appendChild(stackLi);
   });
 
+  // Get a reference to the clear button
+const clearButton = document.getElementById("clearButton");
+
+// Add a click event listener to the clear button
+clearButton.addEventListener("click", function () {
+    // Get a reference to the form and reset it
+    const orderForm = document.getElementById("orderForm");
+    orderForm.reset();
+    
+    // Clear any generated lists or summaries
+    const stackCountsElement = document.getElementById("stackCounts");
+    const productListElement = document.getElementById("productList");
+    const stacksLeftElement = document.getElementById("stacksLeft");
+    const totalCasesElement = document.getElementById("totalCases");
+    
+    stackCountsElement.textContent = "0";
+    productListElement.innerHTML = "";
+    stacksLeftElement.textContent = "0";
+    totalCasesElement.textContent = "0";
+});
+
+
   totalCasesElement.textContent = totalCases; // Update the total cases
 });

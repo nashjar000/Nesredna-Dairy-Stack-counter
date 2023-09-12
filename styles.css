@@ -70,6 +70,16 @@ button:hover {
     align-items: center;
     margin-bottom: 20px;
 }
+
+#clearButton {
+    margin-top: 10px;
+    background-color: red;
+}
+
+#clearButton:hover{
+    background-color: rgb(196, 2, 2);
+}
+
 /* 
 #milk-img {
     width: 100px;
