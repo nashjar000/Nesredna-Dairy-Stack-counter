@@ -5,10 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Andersen Dairy Stack Planner</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="andy 2- gallon-u70463.png">
 </head>
 <body>
+    <img src="andy 2- gallon-u70463.png" alt="milk-img" id="milk-img">
     <h1>Nesredna Dairy Stack Planner</h1>
+    <p id="sub-title">(also, there's a spreedsheet, so, you can caclulate anything else related to milk orders, too.)</p>
+
+    <button onclick="window.open('https://docs.google.com/spreadsheets/d/1oXbK6tAIXpTfpfc7Z-mk637kh_Dd8Hu3kdFfT7Hs5pc/edit#gid=0', '_blank')">Calculator for other milk order info</button>
+
     <form id="orderForm">
+        <div id="orderNumberContainer">
+            <label for="orderNumber">Order Number:</label>
+            <input type="text" id="orderNumber" name="orderNumber">
+        </div>
+
         <table>
             <tr>
                 <th>Product</th>
@@ -136,14 +147,9 @@
     </form>
 
     <div id="generatedList">
+        <p id="palletizingMessage"></p>
         <div id="stacksLeftContainer">Total Stacks Left to Grab: <span id="stacksLeft">0</span></div>
         <div id="totalCasesContainer">Total Cases: <span id="totalCases">0</span></div>
-    </div>
-
-    <div id="summary">
-        <p>Total Stacks: <span id="stackCounts"></span></p>
-        <!-- <p>Total Cases Left: <span id="casesLeft"></span></p> -->
-        <p>Products Order:</p>
         <ul id="productList"></ul>
     </div>
 

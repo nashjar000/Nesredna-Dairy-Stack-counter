@@ -18,6 +18,18 @@ h1 {
     margin-bottom: 20px;
 }
 
+#sub-title{
+    text-align: center;
+}
+
+#milk-img {
+    width: 100px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Center the image horizontally */
+    margin: 0 auto; /* Center the image horizontally */
+    margin-top: 20px; /* Add top margin to create space */
+}
+
 form {
     background-color: #fff;
     border: 1px solid #ccc;
@@ -99,4 +111,14 @@ button:hover {
     button {
         font-size: 16px;
     }
+}
+
+#link{
+    text-decoration: none;
+    color: green;
+}
+
+#link:hover{
+    text-decoration: underline;
+    color: lightblue;
 }

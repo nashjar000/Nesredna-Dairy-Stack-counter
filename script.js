@@ -1,7 +1,40 @@
-// Get a reference to the form and add a submit event listener
+// Function to check if the order number requires palletizing
+function checkPalletOrder(orderNumber) {
+  const palletOrderNumbers = ["103", "143", "105", "106"];
+  return palletOrderNumbers.includes(orderNumber);
+}
+
+// Get a reference to the form
 const orderForm = document.getElementById("orderForm");
+
+// Get a reference to the productList element
+const productListElement = document.getElementById("productList");
+
+// Get a reference to the palletizing message element
+const palletizingMessage = document.getElementById("palletizingMessage");
+
+// Create a counter for the total stacks and cases
+let totalStacks = 0;
+let totalCases = 0;
+
+// Create an array to store grabbed stacks
+const grabbedStacks = [];
+
+// Add a submit event listener to the form
 orderForm.addEventListener("submit", function (event) {
   event.preventDefault(); // Prevent the form from submitting
+
+  // Get the order number from the input field
+  const orderNumberInput = document.getElementById("orderNumber");
+  const orderNumber = orderNumberInput.value.trim();
+
+  // Check if the order requires palletizing
+  const requiresPalletizing = checkPalletOrder(orderNumber);
+
+  // Display palletizing message
+  palletizingMessage.textContent = requiresPalletizing
+    ? "This order requires palletizing."
+    : "This order does not require palletizing.";
 
   // Define an object to store product names and their quantities
   const productQuantities = {};
@@ -50,26 +83,10 @@ orderForm.addEventListener("submit", function (event) {
     plannedStacks.push([...currentStack]);
   }
 
-  // Display the results
-  const stackCountsElement = document.getElementById("stackCounts");
-  const productListElement = document.getElementById("productList");
-  const stacksLeftElement = document.getElementById("stacksLeft");
-  const totalCasesElement = document.getElementById("totalCases"); // Added
-
-  stackCountsElement.textContent = plannedStacks.length;
+  // Clear the previous list of planned stacks
   productListElement.innerHTML = "";
-  stacksLeftElement.textContent = plannedStacks.length; // Update the total stacks left
-
-  let totalCases = 0; // Initialize the total cases
 
   plannedStacks.forEach((stack, index) => {
-    const stackSummary = stack.map((item) => `${item.product}: ${item.cases} cases`).join(', ');
-
-    // Calculate the total cases for the stack
-    const stackTotalCases = stack.reduce((total, item) => total + item.cases, 0);
-
-    totalCases += stackTotalCases; // Add the stack's total cases to the overall total
-
     // Create a list of products for each stack
     const productUl = document.createElement("ul");
     stack.forEach((item) => {
@@ -78,17 +95,19 @@ orderForm.addEventListener("submit", function (event) {
       productUl.appendChild(productLi);
     });
 
-    // Add a "Grab" button for each stack
+    // Create a "Grab" button for each stack
     const grabButton = document.createElement("button");
     grabButton.textContent = "Grab";
+
+    // Add a click event listener to the "Grab" button
     grabButton.addEventListener("click", () => {
-      // You can add code here to handle grabbing the stack
-      // For example, you can remove the stack from the UI
+      // Handle grabbing the stack here
+      // For now, let's remove the stack from the UI
       productListElement.removeChild(stackLi);
-      plannedStacks.splice(index, 1); // Remove the grabbed stack from the array
-      stacksLeftElement.textContent = plannedStacks.length; // Update the total stacks left
-      totalCases -= stackTotalCases; // Subtract the stack's total cases from the overall total
-      totalCasesElement.textContent = totalCases; // Update the total cases
+      // Update the display of total cases and stacks
+      totalCases -= stack.reduce((total, item) => total + item.cases, 0);
+      totalStacks -= 1;
+      updateDisplay();
     });
 
     const stackLi = document.createElement("li");
@@ -98,27 +117,94 @@ orderForm.addEventListener("submit", function (event) {
     productListElement.appendChild(stackLi);
   });
 
-  // Get a reference to the clear button
+  // Display the productList element when stacks are generated
+  productListElement.style.display = "block";
+
+  // Update the display of total cases and stacks
+  totalStacks += plannedStacks.length;
+  totalCases += plannedStacks.reduce((total, stack) =>
+    total + stack.reduce((cases, item) => cases + item.cases, 0), 0);
+  updateDisplay();
+});
+
+// Function to update the display of total cases and stacks
+function updateDisplay() {
+  const totalStacksElement = document.getElementById("stacksLeft");
+  totalStacksElement.textContent = totalStacks;
+
+  const totalCasesElement = document.getElementById("totalCases");
+  totalCasesElement.textContent = totalCases;
+}
+
+// ... (previous code)
+
+// Loop through the product quantities and plan the stacks
+for (const productName in productQuantities) {
+  let quantity = productQuantities[productName];
+
+  while (quantity > 0) {
+    // Check if adding this product will exceed the maximum cases per stack
+    if (totalCasesInStack + quantity <= 6) {
+      // Check if the quantity is greater than 0 before adding to the stack
+      if (quantity > 0) {
+        currentStack.push({ product: productName, cases: quantity });
+        totalCasesInStack += quantity;
+        quantity = 0;
+      }
+    } else {
+      // If adding the product exceeds the maximum cases, start a new stack
+      const casesToAdd = 6 - totalCasesInStack;
+      // Check if the cases to add is greater than 0 before adding to the stack
+      if (casesToAdd > 0) {
+        currentStack.push({ product: productName, cases: casesToAdd });
+        plannedStacks.push([...currentStack]);
+        currentStack.length = 0;
+        totalCasesInStack = 0;
+        quantity -= casesToAdd;
+      }
+    }
+  }
+}
+
+function clearFormAndStacks() {
+  orderForm.reset(); // Clear the form fields
+  productListElement.innerHTML = ''; // Clear the displayed stacks
+  plannedStacks.length = 0; // Clear the planned stacks array
+  grabbedStacks.length = 0; // Clear the grabbed stacks array
+  totalStacks = 0; // Reset the total stacks count
+  totalCases = 0; // Reset the total cases count
+  updateDisplay(); // Update the display
+}
+
+// Add a click event listener to the clear button
+clearButton.addEventListener('click', clearFormAndStacks);
+
+// ... (previous code)
+
+// Function to update the display of total cases and stacks
+function updateDisplay() {
+  const totalStacksElement = document.getElementById("stacksLeft");
+  totalStacksElement.textContent = totalStacks;
+
+  const totalCasesElement = document.getElementById("totalCases");
+  totalCasesElement.textContent = totalCases;
+}
+
+// ... (previous code)
+
+function clearFormAndStacks() {
+  orderForm.reset(); // Clear the form fields
+  productListElement.innerHTML = ''; // Clear the displayed stacks
+  plannedStacks.length = 0; // Clear the planned stacks array
+  grabbedStacks.length = 0; // Clear the grabbed stacks array
+  totalStacks = 0; // Reset the total stacks count
+  totalCases = 0; // Reset the total cases count
+  updateDisplay(); // Update the display
+}
+
+// Get a reference to the clear button
 const clearButton = document.getElementById("clearButton");
 
 // Add a click event listener to the clear button
-clearButton.addEventListener("click", function () {
-    // Get a reference to the form and reset it
-    const orderForm = document.getElementById("orderForm");
-    orderForm.reset();
-    
-    // Clear any generated lists or summaries
-    const stackCountsElement = document.getElementById("stackCounts");
-    const productListElement = document.getElementById("productList");
-    const stacksLeftElement = document.getElementById("stacksLeft");
-    const totalCasesElement = document.getElementById("totalCases");
-    
-    stackCountsElement.textContent = "0";
-    productListElement.innerHTML = "";
-    stacksLeftElement.textContent = "0";
-    totalCasesElement.textContent = "0";
-});
+clearButton.addEventListener("click", clearFormAndStacks);
 
-
-  totalCasesElement.textContent = totalCases; // Update the total cases
-});
