@@ -208,3 +208,9 @@ const clearButton = document.getElementById("clearButton");
 // Add a click event listener to the clear button
 clearButton.addEventListener("click", clearFormAndStacks);
 
+clearButton.addEventListener("click", function() {
+  console.log("Clear button clicked");
+  clearFormAndStacks();
+});
+
+

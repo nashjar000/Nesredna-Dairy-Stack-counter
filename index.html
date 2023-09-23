@@ -3,158 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andersen Dairy Stack Planner</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="./login.css">
     <link rel="icon" type="image/x-icon" href="andy 2- gallon-u70463.png">
 </head>
 <body>
-    <img src="andy 2- gallon-u70463.png" alt="milk-img" id="milk-img">
-    <h1>Nesredna Dairy Stack Planner</h1>
-    <p id="sub-title">(also, there's a spreedsheet, so, you can caclulate anything else related to milk orders, too.)</p>
-
-    <button onclick="window.open('https://docs.google.com/spreadsheets/d/1oXbK6tAIXpTfpfc7Z-mk637kh_Dd8Hu3kdFfT7Hs5pc/edit#gid=0', '_blank')">Calculator for other milk order info</button>
-
-    <form id="orderForm">
-        <div id="orderNumberContainer">
-            <label for="orderNumber">Order Number:</label>
-            <input type="text" id="orderNumber" name="orderNumber">
-        </div>
-
-        <table>
-            <tr>
-                <th>Product</th>
-                <th>Amount of Cases</th>
-            </tr>
-
-            <tr>
-                <th>Organic</th>
-            </tr>
-            <tr>
-                <td>Organic Whole Milk</td>
-                <td><input type="number" name="Organic Whole Milk" min="0"></td>
-            </tr>
-            <tr>
-                <td>Organic 2% Milk</td>
-                <td><input type="number" name="Organic 2% Milk" min="0"></td>
-            </tr>
-            <tr>
-                <th>Winco Milk</th>
-            </tr>
-            <tr>
-                <td>Winco Whole Milk</td>
-                <td><input type="number" name="Winco Whole Milk" min="0"></td>
-            </tr>
-            <tr>
-                <td>Winco 2% Milk</td>
-                <td><input type="number" name="Winco 2% Milk" min="0"></td>
-            </tr>
-            <tr>
-                <td>Winco 1% Milk</td>
-                <td><input type="number" name="Winco 1% Milk" min="0"></td>
-            </tr>
-            <tr>
-                <td>Winco Non-fat Milk</td>
-                <td><input type="number" name="Winco Non-fat Milk" min="0"></td>
-            </tr>
-            <tr>
-                <td>Winco Chocolate Milk</td>
-                <td><input type="number" name="Winco Chocolate Milk" min="0"></td>
-            </tr>
-            <tr>
-                <td>Winco Chocolate Milk 1/2 gallon</td>
-                <td><input type="number" name="Winco Chocolate Milk 1/2 gallon" min="0"></td>
-            </tr>
-
-            <tr>
-                <th>Dairy Gold</th>
-            </tr>
-            <tr>
-                <td>Dairy Gold Chocolate Milk</td>
-                <td><input type="number" name="Dairy Gold Chocolate Milk" min="0"></td>
-            </tr>
-            <tr>
-                <td>Dairy Gold 1/2 gallon Chocolate Milk</td>
-                <td><input type="number" name="Dairy Gold 1/2 gallon Chocolate Milk" min="0"></td>
-            </tr>
-
-            <tr>
-                <th>Andersen Milk</th>
-            </tr>
-            <tr>
-                <td>Andersen Whole Milk</td>
-                <td><input type="number" name="Andersen Whole Milk" min="0"></td>
-            </tr>
-            <tr>
-                <td>Andersen 2% Milk</td>
-                <td><input type="number" name="Andersen 2% Milk" min="0"></td>
-            </tr>
-            <tr>
-                <td>Andersen 1% Milk</td>
-                <td><input type="number" name="Andersen 1% Milk" min="0"></td>
-            </tr>
-            <tr>
-                <td>Andersen Non-fat Milk</td>
-                <td><input type="number" name="Andersen Non-fat Milk" min="0"></td>
-            </tr>
-
-            <tr>
-                <th>Juice</th>
-            </tr>
-            <tr>
-                <td>Hawaiian Juice</td>
-                <td><input type="number" name="Hawaiian Juice" min="0"></td>
-            </tr>
-            <tr>
-                <td>Strawberry Juice</td>
-                <td><input type="number" name="Strawberry Juice" min="0"></td>
-            </tr>
-            <tr>
-                <td>Apple Juice</td>
-                <td><input type="number" name="Apple Juice" min="0"></td>
-            </tr>
-            <tr>
-                <td>Guava Juice</td>
-                <td><input type="number" name="Guava Juice" min="0"></td>
-            </tr>
-            <tr>
-                <td>Citrus Juice</td>
-                <td><input type="number" name="Citrus Juice" min="0"></td>
-            </tr>
-            <tr>
-                <td>Mango Juice</td>
-                <td><input type="number" name="Mango Juice" min="0"></td>
-            </tr>
-            <tr>
-                <td>Tropical Juice</td>
-                <td><input type="number" name="Tropical Juice" min="0"></td>
-            </tr>
-            <tr>
-                <td>Island Juice</td>
-                <td><input type="number" name="Island Juice" min="0"></td>
-            </tr>
-            <tr>
-                <td>Tea</td>
-                <td><input type="number" name="Tea" min="0"></td>
-            </tr>
-            <tr>
-                <td>Orange Juice</td>
-                <td><input type="number" name="Orange Juice" min="0"></td>
-            </tr>
-        </table>
-
-        <button type="submit" id="submitButton">Submit</button>
-        <button type="button" id="clearButton">Clear</button>
-    </form>
-
-    <div id="generatedList">
-        <p id="palletizingMessage"></p>
-        <div id="stacksLeftContainer">Total Stacks Left to Grab: <span id="stacksLeft">0</span></div>
-        <div id="totalCasesContainer">Total Cases: <span id="totalCases">0</span></div>
-        <ul id="productList"></ul>
+    <div class="login-container">
+        <img src="andy 2- gallon-u70463.png" alt="milk-img" id="milk-img">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <label for="passcode">Passcode:</label>
+            <input type="password" id="passcode" name="passcode" required>
+            <button type="submit">Login</button>
+        </form>
     </div>
 
-    <p>&copy;2023 - Jared Nash</p>
+    <script>
+        // Static passcode (change this to your desired passcode)
+        const validPasscode = "3201"; 
 
-    <script src="script.js"></script>
+        // Get a reference to the login form
+        const loginForm = document.getElementById("loginForm");
+
+        // Add a submit event listener to the form
+        loginForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            // Get the user-entered passcode
+            const enteredPasscode = document.getElementById("passcode").value;
+
+            // Check if the entered passcode matches the valid passcode
+            if (enteredPasscode === validPasscode) {
+                // Redirect to the main page or perform other actions here
+                window.location.href = "index.html"; // Replace "main.html" with your actual main page
+            } else {
+                // Display an error message or take appropriate action for an invalid passcode
+                alert("Invalid passcode. Please try again.");
+            }
+        });
+    </script>
 </body>
+<p>&copy;2023 - Jared Nash</p>
 </html>
