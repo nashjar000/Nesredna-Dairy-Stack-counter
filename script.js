@@ -165,22 +165,6 @@ for (const productName in productQuantities) {
     }
   }
 }
-
-function clearFormAndStacks() {
-  orderForm.reset(); // Clear the form fields
-  productListElement.innerHTML = ''; // Clear the displayed stacks
-  plannedStacks.length = 0; // Clear the planned stacks array
-  grabbedStacks.length = 0; // Clear the grabbed stacks array
-  totalStacks = 0; // Reset the total stacks count
-  totalCases = 0; // Reset the total cases count
-  updateDisplay(); // Update the display
-}
-
-// Add a click event listener to the clear button
-clearButton.addEventListener('click', clearFormAndStacks);
-
-// ... (previous code)
-
 // Function to update the display of total cases and stacks
 function updateDisplay() {
   const totalStacksElement = document.getElementById("stacksLeft");
@@ -190,8 +174,7 @@ function updateDisplay() {
   totalCasesElement.textContent = totalCases;
 }
 
-// ... (previous code)
-
+// Function to clear the form and stacks
 function clearFormAndStacks() {
   orderForm.reset(); // Clear the form fields
   productListElement.innerHTML = ''; // Clear the displayed stacks
@@ -206,10 +189,7 @@ function clearFormAndStacks() {
 const clearButton = document.getElementById("clearButton");
 
 // Add a click event listener to the clear button
-clearButton.addEventListener("click", clearFormAndStacks);
-
-clearButton.addEventListener("click", function() {
-  console.log("Clear button clicked");
+clearButton.addEventListener("click", function () {
   clearFormAndStacks();
 });
 
