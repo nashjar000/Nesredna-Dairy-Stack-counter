@@ -95,6 +95,26 @@ clearButton.addEventListener("click", function () {
   clearFormAndStacks();
 });
 
+// Get a reference to the clear stacks button
+const clearStacksButton = document.getElementById("clearStacksButton");
+
+// Add a click event listener to the clear stacks button
+clearStacksButton.addEventListener("click", function () {
+  // Clear the planned stacks
+  plannedStacks.length = 0;
+
+  // Clear the productList element
+  productListElement.innerHTML = "";
+
+  // Reset total stacks and total cases
+  totalStacks = 0;
+  totalCases = 0;
+
+  // Update the display
+  updateDisplay();
+});
+
+
 function clearFormAndStacks() {
   // Reset variables to initial values
   totalStacks = 0;

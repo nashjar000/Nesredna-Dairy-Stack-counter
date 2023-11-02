@@ -22,6 +22,10 @@ h1 {
     text-align: center;
 }
 
+#clearStacksButton{
+    background-color: red;
+}
+
 .snow-background{
     margin-left: auto;
     margin-right: auto;
