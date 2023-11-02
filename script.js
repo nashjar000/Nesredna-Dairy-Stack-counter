@@ -36,6 +36,9 @@ orderForm.addEventListener("submit", function (event) {
     ? "This order NEEDS palletizing."
     : "This order does NOT require palletizing.";
 
+    // Add style
+    palletizingMessage.style.color = requiresPalletizing ? "red" : "black";
+
   // Define an object to store product names and their quantities
   const productQuantities = {};
 
