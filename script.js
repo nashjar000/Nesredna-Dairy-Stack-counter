@@ -1,6 +1,6 @@
 // Function to check if the order number requires palletizing
 function checkPalletOrder(orderNumber) {
-  const palletOrderNumbers = ["103", "143", "105", "106"];
+  const palletOrderNumbers = ["103", "153", "105", "106"];
   return palletOrderNumbers.includes(orderNumber);
 }
 
@@ -33,8 +33,8 @@ orderForm.addEventListener("submit", function (event) {
 
   // Display palletizing message
   palletizingMessage.textContent = requiresPalletizing
-    ? "This order requires palletizing."
-    : "This order does not require palletizing.";
+    ? "This order NEEDS palletizing."
+    : "This order does NOT require palletizing.";
 
   // Define an object to store product names and their quantities
   const productQuantities = {};
@@ -176,14 +176,10 @@ function updateDisplay() {
 
 // Function to clear the form and stacks
 function clearFormAndStacks() {
-  orderForm.reset(); // Clear the form fields
-  productListElement.innerHTML = ''; // Clear the displayed stacks
-  plannedStacks.length = 0; // Clear the planned stacks array
-  grabbedStacks.length = 0; // Clear the grabbed stacks array
-  totalStacks = 0; // Reset the total stacks count
-  totalCases = 0; // Reset the total cases count
-  updateDisplay(); // Update the display
+  // Reload the page to reset everything
+  window.location.reload();
 }
+
 
 // Get a reference to the clear button
 const clearButton = document.getElementById("clearButton");
