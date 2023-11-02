@@ -1,6 +1,6 @@
 // Function to check if the order number requires palletizing
 function checkPalletOrder(orderNumber) {
-  const palletOrderNumbers = ["103", "153", "105", "106"];
+  const palletOrderNumbers = ["102", "106", "143", "163", "169"];
   return palletOrderNumbers.includes(orderNumber);
 }
 
