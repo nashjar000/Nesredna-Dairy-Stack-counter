@@ -86,8 +86,36 @@ orderForm.addEventListener("submit", function (event) {
     plannedStacks.push([...currentStack]);
   }
 
-  // Clear the previous list of planned stacks
+  // Get a reference to the clear button
+const clearButton = document.getElementById("clearButton");
+
+// Add a click event listener to the clear button
+clearButton.addEventListener("click", function () {
+  console.log("Clear button clicked"); // Add this line
+  clearFormAndStacks();
+});
+
+function clearFormAndStacks() {
+  // Reset variables to initial values
+  totalStacks = 0;
+  totalCases = 0;
+  grabbedStacks.length = 0;
+
+  // Reset form values
+  orderForm.reset();
+
+  // Clear the productList element
   productListElement.innerHTML = "";
+
+  // Clear the palletizing message
+  palletizingMessage.textContent = "";
+
+  // Hide the productList element
+  productListElement.style.display = "none";
+
+  // Update the display
+  updateDisplay();
+}
 
   plannedStacks.forEach((stack, index) => {
     // Create a list of products for each stack
