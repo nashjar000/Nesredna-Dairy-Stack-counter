@@ -86,13 +86,18 @@ orderForm.addEventListener("submit", function (event) {
     plannedStacks.push([...currentStack]);
   }
 
-  // Get a reference to the clear button
+ // Get a reference to the clear button
 const clearButton = document.getElementById("clearButton");
 
 // Add a click event listener to the clear button
 clearButton.addEventListener("click", function () {
-  console.log("Clear button clicked"); // Add this line
-  clearFormAndStacks();
+  // Display a confirmation dialog
+  const isConfirmed = confirm("Are you sure you want to clear the form and stacks?");
+  
+  // Check if the user confirmed
+  if (isConfirmed) {
+    clearFormAndStacks();
+  }
 });
 
 // Get a reference to the clear stacks button
@@ -100,42 +105,25 @@ const clearStacksButton = document.getElementById("clearStacksButton");
 
 // Add a click event listener to the clear stacks button
 clearStacksButton.addEventListener("click", function () {
-  // Clear the planned stacks
-  plannedStacks.length = 0;
+  // Display a confirmation dialog
+  const isConfirmed = confirm("Are you sure you want to clear the planned stacks?");
+  
+  // Check if the user confirmed
+  if (isConfirmed) {
+    // Clear the planned stacks
+    plannedStacks.length = 0;
 
-  // Clear the productList element
-  productListElement.innerHTML = "";
+    // Clear the productList element
+    productListElement.innerHTML = "";
 
-  // Reset total stacks and total cases
-  totalStacks = 0;
-  totalCases = 0;
+    // Reset total stacks and total cases
+    totalStacks = 0;
+    totalCases = 0;
 
-  // Update the display
-  updateDisplay();
+    // Update the display
+    updateDisplay();
+  }
 });
-
-
-function clearFormAndStacks() {
-  // Reset variables to initial values
-  totalStacks = 0;
-  totalCases = 0;
-  grabbedStacks.length = 0;
-
-  // Reset form values
-  orderForm.reset();
-
-  // Clear the productList element
-  productListElement.innerHTML = "";
-
-  // Clear the palletizing message
-  palletizingMessage.textContent = "";
-
-  // Hide the productList element
-  productListElement.style.display = "none";
-
-  // Update the display
-  updateDisplay();
-}
 
   plannedStacks.forEach((stack, index) => {
     // Create a list of products for each stack
