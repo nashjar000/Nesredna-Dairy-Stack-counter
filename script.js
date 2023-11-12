@@ -245,21 +245,61 @@ async function handleImageCapture() {
   const selectedImage = documentImageInput.files[0];
 
   if (selectedImage) {
-    const imageUrl = URL.createObjectURL(selectedImage);
+      const imageUrl = URL.createObjectURL(selectedImage);
 
-    // Perform OCR on the selected image
-    const scannedText = await performOCR(imageUrl);
+      // Perform OCR on the selected image
+      const scannedText = await performOCR(imageUrl);
 
-    // Extract relevant information from the scanned text
-    const scannedInfo = extractInfoFromOCR(scannedText);
+      // Extract relevant information from the scanned text
+      const scannedInfo = extractInfoFromOCR(scannedText);
 
-    // Update the table with the scanned information
-    updateTable(scannedInfo);
-
-    // For demonstration purposes, display the scanned text
-    alert(`Scanned Text: ${scannedText}`);
+      // Update the order form with the scanned information
+      updateOrderForm(scannedInfo);
   }
 }
+
+// Function to extract relevant information from the scanned text
+function extractInfoFromOCR(scannedText) {
+  const scannedInfo = {};
+
+  // Example: Extract product names and quantities from the scanned text
+  const productRegex = /(\w+) \d+ cases/g;
+  const matches = [...scannedText.matchAll(productRegex)];
+
+  matches.forEach((match) => {
+      const productName = match[1];
+      const quantityRegex = new RegExp(`${productName} (\\d+) cases`);
+      const quantityMatch = scannedText.match(quantityRegex);
+      const quantity = quantityMatch ? parseInt(quantityMatch[1], 10) : 0;
+
+      // Add the product and quantity to the scannedInfo object
+      scannedInfo[productName] = quantity;
+  });
+
+  return scannedInfo;
+}
+
+// Function to update the order form with the scanned information
+function updateOrderForm(scannedInfo) {
+  // Loop through the scannedInfo object and update the corresponding input fields
+  for (const productName in scannedInfo) {
+      const quantity = scannedInfo[productName];
+
+      // Find the th element with the corresponding data-product attribute
+      const productHeader = document.querySelector(`th[data-product="${productName}"]`);
+
+      if (productHeader) {
+          // Find the input field for the product under the same data-product
+          const inputField = productHeader.nextElementSibling.querySelector('input');
+
+          if (inputField) {
+              // Update the input field with the quantity
+              inputField.value = quantity;
+          }
+      }
+  }
+}
+
 
 // Function to extract relevant information from the scanned text
 function extractInfoFromOCR(scannedText) {
