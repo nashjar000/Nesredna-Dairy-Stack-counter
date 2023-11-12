@@ -13,6 +13,43 @@
     <p id="sub-title">(also, there's a spreadsheet, so, you can calculate anything else related to milk orders, too.)</p>
 
     <button onclick="window.open('https://docs.google.com/spreadsheets/d/1oXbK6tAIXpTfpfc7Z-mk637kh_Dd8Hu3kdFfT7Hs5pc/edit#gid=0', '_blank')">Calculator for other milk order info</button>
+    <!-- Add this button to your HTML -->
+<button id="scanDocumentButton">Scan Document</button>
+
+<!-- Modify the form to include an input for image capture -->
+<form id="orderForm" action="#" method="post">
+  <!-- ... (existing form fields) -->
+  <input type="file" accept="image/*" capture="camera" id="documentImageInput" style="display: none;">
+</form>
+
+<!-- Add this script to your JavaScript -->
+<script>
+  const scanDocumentButton = document.getElementById("scanDocumentButton");
+  const documentImageInput = document.getElementById("documentImageInput");
+
+  scanDocumentButton.addEventListener("click", () => {
+    // Trigger the hidden input for image capture
+    documentImageInput.click();
+  });
+
+  // Listen for changes in the selected image
+  documentImageInput.addEventListener("change", handleImageCapture);
+
+  function handleImageCapture() {
+    const selectedImage = documentImageInput.files[0];
+
+    if (selectedImage) {
+      // Perform document processing logic here
+      // You may need to use a third-party library for OCR (Optical Character Recognition)
+      // Extract information from the document and update the order form accordingly
+
+      // For demonstration purposes, simply display the image
+      const imageUrl = URL.createObjectURL(selectedImage);
+      alert(`Image captured: ${imageUrl}`);
+    }
+  }
+</script>
+
 
     <form id="orderForm">
         <div id="orderNumberContainer">
