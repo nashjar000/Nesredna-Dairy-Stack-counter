@@ -283,5 +283,73 @@ function updateOrderForm(scannedInfo) {
   // Add more code to update other form fields based on the scanned information
 }
 
+// Function to handle OCR using Tesseract.js
+async function performOCR(image) {
+  const result = await Tesseract.recognize(
+    image,
+    'eng', // language code, you can change this if needed
+    { logger: (info) => console.log(info) }
+  );
+  return result.data.text.trim();
+}
+
+// Add a change event listener to the documentImageInput
+documentImageInput.addEventListener("change", handleImageCapture);
+
+async function handleImageCapture() {
+  const selectedImage = documentImageInput.files[0];
+
+  if (selectedImage) {
+    const imageUrl = URL.createObjectURL(selectedImage);
+
+    // Perform OCR on the selected image
+    const scannedText = await performOCR(imageUrl);
+
+    // Extract relevant information from the scanned text
+    const scannedInfo = extractInfoFromOCR(scannedText);
+
+    // Update the order form with the scanned information
+    updateOrderForm(scannedInfo);
+
+    // For demonstration purposes, display the scanned text
+    alert(`Scanned Text: ${scannedText}`);
+  }
+}
+
+// Function to extract relevant information from the scanned text
+function extractInfoFromOCR(scannedText) {
+  // Example: Extract product names and quantities from the scanned text
+  const productRegex = /(\w+) \d+ cases/g;
+  const matches = [...scannedText.matchAll(productRegex)];
+
+  const scannedInfo = {};
+
+  matches.forEach((match) => {
+    const productName = match[1];
+    const quantityRegex = new RegExp(`${productName} (\\d+) cases`);
+    const quantityMatch = scannedText.match(quantityRegex);
+    const quantity = quantityMatch ? parseInt(quantityMatch[1], 10) : 0;
+
+    // Add the product and quantity to the scannedInfo object
+    scannedInfo[productName] = quantity;
+  });
+
+  return scannedInfo;
+}
+
+// Function to update the order form with the scanned information
+function updateOrderForm(scannedInfo) {
+  // Loop through the scannedInfo object and update the corresponding input fields
+  for (const productName in scannedInfo) {
+    const quantity = scannedInfo[productName];
+
+    // Example: Update the input field for the product
+    const inputField = document.querySelector(`input[name="${productName}"]`);
+    if (inputField) {
+      inputField.value = quantity;
+    }
+  }
+}
+
 
 
