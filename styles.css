@@ -114,6 +114,11 @@ button:hover {
     background-color: rgb(196, 2, 2);
 }
 
+#scanDocumentButton {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
 /* 
 #milk-img {
     width: 100px;
