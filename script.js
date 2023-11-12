@@ -228,4 +228,60 @@ clearButton.addEventListener("click", function () {
   clearFormAndStacks();
 });
 
+// Function to handle OCR using Tesseract.js
+async function performOCR(image) {
+  const result = await Tesseract.recognize(
+    image,
+    'eng', // language code, you can change this if needed
+    { logger: (info) => console.log(info) }
+  );
+  return result.data.text.trim();
+}
+
+// Add a change event listener to the documentImageInput
+documentImageInput.addEventListener("change", handleImageCapture);
+
+async function handleImageCapture() {
+  const selectedImage = documentImageInput.files[0];
+
+  if (selectedImage) {
+    const imageUrl = URL.createObjectURL(selectedImage);
+    
+    // Perform OCR on the selected image
+    const scannedText = await performOCR(imageUrl);
+
+    // Extract relevant information from the scanned text (customize as needed)
+    const scannedInfo = extractInfoFromOCR(scannedText);
+
+    // Update the order form with the scanned information
+    updateOrderForm(scannedInfo);
+
+    // For demonstration purposes, display the scanned text
+    alert(`Scanned Text: ${scannedText}`);
+  }
+}
+
+// Function to extract relevant information from the scanned text (customize as needed)
+function extractInfoFromOCR(scannedText) {
+  // Example: Extract order number from the scanned text
+  const orderNumberRegex = /Order Number: (\w+)/;
+  const match = scannedText.match(orderNumberRegex);
+  const orderNumber = match ? match[1] : '';
+
+  return {
+    orderNumber,
+    // Add more properties as needed based on your document content
+  };
+}
+
+// Function to update the order form with the scanned information
+function updateOrderForm(scannedInfo) {
+  // Example: Update the order number input
+  const orderNumberInput = document.getElementById("orderNumber");
+  orderNumberInput.value = scannedInfo.orderNumber;
+
+  // Add more code to update other form fields based on the scanned information
+}
+
+
 
