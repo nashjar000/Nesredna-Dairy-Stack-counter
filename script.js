@@ -351,5 +351,28 @@ function updateOrderForm(scannedInfo) {
   }
 }
 
+// Function to extract relevant information from the scanned text
+function extractInfoFromOCR(scannedText) {
+  const scannedInfo = {};
+
+  // Example: Extract product names and quantities from the scanned text
+  const productRegex = /(\w+) \d+ cases/g;
+  const matches = [...scannedText.matchAll(productRegex)];
+
+  matches.forEach((match) => {
+    const productName = match[1];
+
+    // Example: Extract quantity using a specific product name
+    const quantityRegex = new RegExp(`${productName}: (\\d+) cases`);
+    const quantityMatch = scannedText.match(quantityRegex);
+    const quantity = quantityMatch ? parseInt(quantityMatch[1], 10) : 0;
+
+    // Add the product and quantity to the scannedInfo object
+    scannedInfo[productName] = quantity;
+  });
+
+  return scannedInfo;
+}
+
 
 
