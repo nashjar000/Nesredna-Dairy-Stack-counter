@@ -228,5 +228,39 @@ clearButton.addEventListener("click", function () {
   clearFormAndStacks();
 });
 
+// Loop through the product quantities and plan the stacks
+for (const productName in productQuantities) {
+  let quantity = productQuantities[productName];
+
+  while (quantity > 0) {
+    // Check if adding this product will exceed the maximum cases per stack
+    if (totalCasesInStack + quantity <= 6) {
+      // Check if the current stack is empty or the current product matches the last added product
+      if (currentStack.length === 0 || currentStack[currentStack.length - 1].product === productName) {
+        currentStack.push({ product: productName, cases: quantity });
+      } else {
+        // Start a new stack for a different product
+        const casesToAdd = Math.min(quantity, 6); // Adjust this as needed
+        plannedStacks.push([...currentStack]);
+        currentStack.length = 0;
+        totalCasesInStack = 0;
+        currentStack.push({ product: productName, cases: casesToAdd });
+      }
+
+      totalCasesInStack += quantity;
+      quantity = 0;
+    } else {
+      // If adding the product exceeds the maximum cases, start a new stack
+      const casesToAdd = 6 - totalCasesInStack;
+      currentStack.push({ product: productName, cases: casesToAdd });
+      plannedStacks.push([...currentStack]);
+      currentStack.length = 0;
+      totalCasesInStack = 0;
+      quantity -= casesToAdd;
+    }
+  }
+}
+
+
 
 
