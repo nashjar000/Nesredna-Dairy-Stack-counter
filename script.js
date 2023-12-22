@@ -7,11 +7,36 @@ function checkPalletOrder(orderNumber) {
 // Get a reference to the form
 const orderForm = document.getElementById("orderForm");
 
-// Get a reference to the productList element
-const productListElement = document.getElementById("productList");
-
 // Get a reference to the palletizing message element
 const palletizingMessage = document.getElementById("palletizingMessage");
+
+// Add a submit event listener to the form
+orderForm.addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevent the form from submitting
+
+  // Get the order number from the input field
+  const orderNumberInput = document.getElementById("orderNumber");
+  const orderNumber = orderNumberInput.value.trim();
+
+  // Check if the order requires palletizing
+  const requiresPalletizing = checkPalletOrder(orderNumber);
+
+  // Display palletizing message
+  palletizingMessage.textContent = requiresPalletizing
+    ? "This order NEEDS palletizing."
+    : "This order does NOT require palletizing.";
+
+  // Add style
+  palletizingMessage.style.color = requiresPalletizing ? "red" : "black";
+
+  // Show alert if palletizing is needed
+  if (requiresPalletizing) {
+    alert("This load needs palletizing!");
+  }
+});
+
+// Get a reference to the productList element
+const productListElement = document.getElementById("productList");
 
 // Create a counter for the total stacks and cases
 let totalStacks = 0;
@@ -260,7 +285,4 @@ for (const productName in productQuantities) {
     }
   }
 }
-
-
-
 
