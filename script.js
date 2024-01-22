@@ -286,3 +286,14 @@ for (const productName in productQuantities) {
   }
 }
 
+// Function for autofill to go down the list 
+    document.addEventListener('input', function (e) {
+        if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'number') {
+            var inputs = Array.from(document.querySelectorAll('input[type="number"]'));
+            var index = inputs.indexOf(e.target);
+            if (index > -1 && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+        }
+    });
+
