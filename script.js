@@ -297,3 +297,4 @@ for (const productName in productQuantities) {
         }
     });
 
+

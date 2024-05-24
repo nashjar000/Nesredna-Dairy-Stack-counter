@@ -119,24 +119,40 @@ button:hover {
     margin-bottom: 10px;
   }
 
-/* 
-#milk-img {
-    width: 100px;
-    margin-right: 10px;
-} */
-
 /* Media query for mobile devices */
 @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    #sub-title{
+        font-size: 14px;
+    }
+
+    .snow-background{
+        width: 100%;
+        height: auto;
+    }
+
+    #milk-img {
+        width: 100%;
+        margin-right: 0;
+    }
+
     form {
         padding: 10px;
     }
 
     table {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     button {
-        font-size: 16px;
+        font-size: 14px;
     }
 }
 
@@ -149,3 +165,4 @@ button:hover {
     text-decoration: underline;
     color: lightblue;
 }
+

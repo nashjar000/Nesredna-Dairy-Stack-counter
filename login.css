@@ -62,6 +62,31 @@ button:hover {
     margin-top: 20px; /* Add top margin to create space */
 }
 
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    input[type="password"] {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
 /* Copyright Text */
 p {
     position: fixed;
@@ -69,3 +94,4 @@ p {
     left: 50%;
     transform: translateX(-50%);
 }
+
