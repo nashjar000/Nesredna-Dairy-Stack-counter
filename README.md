@@ -1,0 +1,1 @@
+This project is made using HTML, CSS, and Java Script. I created this to furhter my understadning of java script. Something basic that I can use at my job to plan stacks of different products I need to grab.
