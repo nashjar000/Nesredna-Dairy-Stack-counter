@@ -4,11 +4,21 @@ function checkPalletOrder(orderNumber) {
   return palletOrderNumbers.includes(orderNumber);
 }
 
-// Get a reference to the form
+// Get references to DOM elements
 const orderForm = document.getElementById("orderForm");
-
-// Get a reference to the palletizing message element
 const palletizingMessage = document.getElementById("palletizingMessage");
+const productListElement = document.getElementById("productList");
+const clearButton = document.getElementById("clearButton");
+const clearStacksButton = document.getElementById("clearStacksButton");
+const applyMissingCasesButton = document.getElementById("applyMissingCasesButton");
+const missingCasesInput = document.getElementById("missingCases");
+
+// Create counters for the total stacks and cases
+let totalStacks = 0;
+let totalCases = 0;
+
+// Create an array to store planned stacks
+let plannedStacks = [];
 
 // Add a submit event listener to the form
 orderForm.addEventListener("submit", function (event) {
@@ -33,36 +43,6 @@ orderForm.addEventListener("submit", function (event) {
   if (requiresPalletizing) {
     alert("This load needs palletizing!");
   }
-});
-
-// Get a reference to the productList element
-const productListElement = document.getElementById("productList");
-
-// Create a counter for the total stacks and cases
-let totalStacks = 0;
-let totalCases = 0;
-
-// Create an array to store grabbed stacks
-const grabbedStacks = [];
-
-// Add a submit event listener to the form
-orderForm.addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent the form from submitting
-
-  // Get the order number from the input field
-  const orderNumberInput = document.getElementById("orderNumber");
-  const orderNumber = orderNumberInput.value.trim();
-
-  // Check if the order requires palletizing
-  const requiresPalletizing = checkPalletOrder(orderNumber);
-
-  // Display palletizing message
-  palletizingMessage.textContent = requiresPalletizing
-    ? "This order NEEDS palletizing."
-    : "This order does NOT require palletizing.";
-
-    // Add style
-    palletizingMessage.style.color = requiresPalletizing ? "red" : "black";
 
   // Define an object to store product names and their quantities
   const productQuantities = {};
@@ -77,17 +57,18 @@ orderForm.addEventListener("submit", function (event) {
     }
   });
 
+  // Convert productQuantities to an array of [productName, quantity] pairs
+  let productsArray = Object.entries(productQuantities);
+
+  // Sort the productsArray in descending order based on quantity
+  productsArray.sort((a, b) => b[1] - a[1]);
+
   // Create an array to represent the current stack
   const currentStack = [];
   let totalCasesInStack = 0;
 
-  // Create an array to store the planned stacks
-  const plannedStacks = [];
-
-  // Loop through the product quantities and plan the stacks
-  for (const productName in productQuantities) {
-    let quantity = productQuantities[productName];
-
+  // Loop through the sorted product quantities and plan the stacks
+  productsArray.forEach(([productName, quantity]) => {
     while (quantity > 0) {
       // Check if adding this product will exceed the maximum cases per stack
       if (totalCasesInStack + quantity <= 6) {
@@ -97,22 +78,126 @@ orderForm.addEventListener("submit", function (event) {
       } else {
         // If adding the product exceeds the maximum cases, start a new stack
         const casesToAdd = 6 - totalCasesInStack;
-        currentStack.push({ product: productName, cases: casesToAdd });
+        if (casesToAdd > 0) {
+          currentStack.push({ product: productName, cases: casesToAdd });
+          quantity -= casesToAdd;
+          totalCasesInStack += casesToAdd;
+        }
+
+        // Push the current stack to plannedStacks
         plannedStacks.push([...currentStack]);
+        totalStacks += 1;
+        totalCases += plannedStacks[plannedStacks.length - 1].reduce((sum, item) => sum + item.cases, 0);
+
+        // Reset current stack and cases count for the new stack
         currentStack.length = 0;
         totalCasesInStack = 0;
-        quantity -= casesToAdd;
       }
     }
-  }
+  });
 
   // If there are any remaining products in the current stack, add it to planned stacks
   if (currentStack.length > 0) {
     plannedStacks.push([...currentStack]);
+    totalStacks += 1;
+    totalCases += plannedStacks[plannedStacks.length - 1].reduce((sum, item) => sum + item.cases, 0);
   }
 
- // Get a reference to the clear button
-const clearButton = document.getElementById("clearButton");
+  // Display the planned stacks and "Grab" button for each stack
+  renderPlannedStacks();
+
+  // Update the display of total cases and stacks
+  updateDisplay();
+
+  // Optionally, reset the form after submission
+  orderForm.reset();
+});
+
+// Function to render the planned stacks in the UI
+function renderPlannedStacks() {
+  // Clear the existing product list to avoid duplicates
+  productListElement.innerHTML = "";
+
+  // Iterate over plannedStacks and create DOM elements
+  plannedStacks.forEach((stack, index) => {
+    const stackLi = document.createElement("li");
+    stackLi.setAttribute("data-index", index); // Set data attribute for reference
+
+    // Create a list of products for each stack
+    const productUl = document.createElement("ul");
+    stack.forEach((item) => {
+      const productLi = document.createElement("li");
+      productLi.textContent = `${item.product}: ${item.cases} cases`;
+      productUl.appendChild(productLi);
+    });
+
+    // Create a "Grab" button for each stack
+    const grabButton = document.createElement("button");
+    grabButton.textContent = "Grab";
+    grabButton.classList.add("grab-button");
+    grabButton.setAttribute("data-index", index); // Set data attribute for reference
+
+    // Append the product list and grab button to the stack list item
+    stackLi.appendChild(productUl);
+    stackLi.appendChild(grabButton);
+
+    // Append the stack list item to the product list
+    productListElement.appendChild(stackLi);
+  });
+
+  // Attach event listeners to all grab buttons
+  attachGrabButtonListeners();
+}
+
+// Function to attach event listeners to grab buttons
+function attachGrabButtonListeners() {
+  const grabButtons = document.querySelectorAll(".grab-button");
+  grabButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const index = parseInt(this.getAttribute("data-index"), 10);
+      if (!isNaN(index) && index >= 0 && index < plannedStacks.length) {
+        // Remove the stack from plannedStacks
+        const removedStack = plannedStacks.splice(index, 1)[0];
+        totalStacks -= 1;
+        totalCases -= removedStack.reduce((sum, item) => sum + item.cases, 0);
+
+        // Update the display
+        updateDisplay();
+
+        // Re-render the stacks to update indices
+        renderPlannedStacks();
+      }
+    });
+  });
+}
+
+// Function to update the display of total cases and stacks
+function updateDisplay() {
+  const totalStacksElement = document.getElementById("stacksLeft");
+  totalStacksElement.textContent = totalStacks;
+
+  const totalCasesElement = document.getElementById("totalCases");
+  totalCasesElement.textContent = totalCases;
+}
+
+// Function to clear the form and stacks
+function clearFormAndStacks() {
+  // Reset the form
+  orderForm.reset();
+
+  // Clear the planned stacks
+  plannedStacks = [];
+
+  // Clear the productList element
+  productListElement.innerHTML = "";
+
+  // Reset total stacks and total cases
+  totalStacks = 0;
+  totalCases = 0;
+
+  // Update the display
+  updateDisplay();
+}
 
 // Add a click event listener to the clear button
 clearButton.addEventListener("click", function () {
@@ -124,9 +209,6 @@ clearButton.addEventListener("click", function () {
     clearFormAndStacks();
   }
 });
-
-// Get a reference to the clear stacks button
-const clearStacksButton = document.getElementById("clearStacksButton");
 
 // Add a click event listener to the clear stacks button
 clearStacksButton.addEventListener("click", function () {
@@ -150,151 +232,71 @@ clearStacksButton.addEventListener("click", function () {
   }
 });
 
-  plannedStacks.forEach((stack, index) => {
-    // Create a list of products for each stack
-    const productUl = document.createElement("ul");
-    stack.forEach((item) => {
-      const productLi = document.createElement("li");
-      productLi.textContent = `${item.product}: ${item.cases} cases`;
-      productUl.appendChild(productLi);
-    });
-
-    // Create a "Grab" button for each stack
-    const grabButton = document.createElement("button");
-    grabButton.textContent = "Grab";
-
-    // Add a click event listener to the "Grab" button
-    grabButton.addEventListener("click", () => {
-      // Handle grabbing the stack here
-      // For now, let's remove the stack from the UI
-      productListElement.removeChild(stackLi);
-      // Update the display of total cases and stacks
-      totalCases -= stack.reduce((total, item) => total + item.cases, 0);
-      totalStacks -= 1;
-      updateDisplay();
-    });
-
-    const stackLi = document.createElement("li");
-    stackLi.appendChild(productUl);
-    stackLi.appendChild(grabButton);
-
-    productListElement.appendChild(stackLi);
-  });
-
-  // Display the productList element when stacks are generated
-  productListElement.style.display = "block";
-
-  // Update the display of total cases and stacks
-  totalStacks += plannedStacks.length;
-  totalCases += plannedStacks.reduce((total, stack) =>
-    total + stack.reduce((cases, item) => cases + item.cases, 0), 0);
-  updateDisplay();
-});
-
-// Function to update the display of total cases and stacks
-function updateDisplay() {
-  const totalStacksElement = document.getElementById("stacksLeft");
-  totalStacksElement.textContent = totalStacks;
-
-  const totalCasesElement = document.getElementById("totalCases");
-  totalCasesElement.textContent = totalCases;
-}
-
-// ... (previous code)
-
-// Loop through the product quantities and plan the stacks
-for (const productName in productQuantities) {
-  let quantity = productQuantities[productName];
-
-  while (quantity > 0) {
-    // Check if adding this product will exceed the maximum cases per stack
-    if (totalCasesInStack + quantity <= 6) {
-      // Check if the quantity is greater than 0 before adding to the stack
-      if (quantity > 0) {
-        currentStack.push({ product: productName, cases: quantity });
-        totalCasesInStack += quantity;
-        quantity = 0;
-      }
-    } else {
-      // If adding the product exceeds the maximum cases, start a new stack
-      const casesToAdd = 6 - totalCasesInStack;
-      // Check if the cases to add is greater than 0 before adding to the stack
-      if (casesToAdd > 0) {
-        currentStack.push({ product: productName, cases: casesToAdd });
-        plannedStacks.push([...currentStack]);
-        currentStack.length = 0;
-        totalCasesInStack = 0;
-        quantity -= casesToAdd;
-      }
-    }
-  }
-}
-// Function to update the display of total cases and stacks
-function updateDisplay() {
-  const totalStacksElement = document.getElementById("stacksLeft");
-  totalStacksElement.textContent = totalStacks;
-
-  const totalCasesElement = document.getElementById("totalCases");
-  totalCasesElement.textContent = totalCases;
-}
-
-// Function to clear the form and stacks
-function clearFormAndStacks() {
-  // Reload the page to reset everything
-  window.location.reload();
-}
-
-
-// Get a reference to the clear button
-const clearButton = document.getElementById("clearButton");
-
-// Add a click event listener to the clear button
-clearButton.addEventListener("click", function () {
-  clearFormAndStacks();
-});
-
-// Loop through the product quantities and plan the stacks
-for (const productName in productQuantities) {
-  let quantity = productQuantities[productName];
-
-  while (quantity > 0) {
-    // Check if adding this product will exceed the maximum cases per stack
-    if (totalCasesInStack + quantity <= 6) {
-      // Check if the current stack is empty or the current product matches the last added product
-      if (currentStack.length === 0 || currentStack[currentStack.length - 1].product === productName) {
-        currentStack.push({ product: productName, cases: quantity });
-      } else {
-        // Start a new stack for a different product
-        const casesToAdd = Math.min(quantity, 6); // Adjust this as needed
-        plannedStacks.push([...currentStack]);
-        currentStack.length = 0;
-        totalCasesInStack = 0;
-        currentStack.push({ product: productName, cases: casesToAdd });
-      }
-
-      totalCasesInStack += quantity;
-      quantity = 0;
-    } else {
-      // If adding the product exceeds the maximum cases, start a new stack
-      const casesToAdd = 6 - totalCasesInStack;
-      currentStack.push({ product: productName, cases: casesToAdd });
-      plannedStacks.push([...currentStack]);
-      currentStack.length = 0;
-      totalCasesInStack = 0;
-      quantity -= casesToAdd;
-    }
-  }
-}
-
 // Function for autofill to go down the list 
-    document.addEventListener('input', function (e) {
-        if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'number') {
-            var inputs = Array.from(document.querySelectorAll('input[type="number"]'));
-            var index = inputs.indexOf(e.target);
-            if (index > -1 && index < inputs.length - 1) {
-                inputs[index + 1].focus();
-            }
-        }
-    });
+document.addEventListener('input', function (e) {
+  if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'number') {
+    var inputs = Array.from(document.querySelectorAll('input[type="number"]'));
+    var index = inputs.indexOf(e.target);
+    if (index > -1 && index < inputs.length - 1) {
+      inputs[index + 1].focus();
+    }
+  }
+});
 
+// =====================
+// Missing Cases Feature
+// =====================
 
+// Add a click event listener to the "Apply Missing Cases" button
+applyMissingCasesButton.addEventListener("click", function () {
+  const missingCasesValue = parseInt(missingCasesInput.value, 10);
+
+  if (isNaN(missingCasesValue) || missingCasesValue <= 0) {
+    alert("Please enter a valid number of missing cases.");
+    return;
+  }
+
+  if (missingCasesValue > totalCases) {
+    alert("Missing cases exceed the total number of cases.");
+    return;
+  }
+
+  let casesToSubtract = missingCasesValue;
+
+  // Iterate through the plannedStacks in reverse order to subtract cases from the last stacks first
+  for (let i = plannedStacks.length - 1; i >= 0 && casesToSubtract > 0; i--) {
+    const stack = plannedStacks[i];
+    for (let j = stack.length - 1; j >= 0 && casesToSubtract > 0; j--) {
+      const product = stack[j];
+      if (product.cases <= casesToSubtract) {
+        casesToSubtract -= product.cases;
+        // Remove the product from the stack
+        stack.splice(j, 1);
+      } else {
+        // Subtract the remaining cases from this product
+        product.cases -= casesToSubtract;
+        casesToSubtract = 0;
+      }
+    }
+
+    // If the stack is empty after subtraction, remove it from plannedStacks
+    if (stack.length === 0) {
+      plannedStacks.splice(i, 1);
+      totalStacks -= 1;
+    }
+  }
+
+  // Update the total cases
+  totalCases -= missingCasesValue;
+
+  // Update the display
+  updateDisplay();
+
+  // Re-render the stacks to reflect changes
+  renderPlannedStacks();
+
+  // Reset the missing cases input
+  missingCasesInput.value = 0;
+
+  alert(`Successfully subtracted ${missingCasesValue} missing cases from the remaining stacks.`);
+});
