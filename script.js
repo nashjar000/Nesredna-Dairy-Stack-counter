@@ -13,11 +13,11 @@ const clearStacksButton = document.getElementById("clearStacksButton");
 const applyMissingCasesButton = document.getElementById("applyMissingCasesButton");
 const missingCasesInput = document.getElementById("missingCases");
 
-// Create counters for the total stacks and cases
+// Counters for the total stacks and cases
 let totalStacks = 0;
 let totalCases = 0;
 
-// Create an array to store planned stacks
+// Array to store planned stacks
 let plannedStacks = [];
 
 // Add a submit event listener to the form
@@ -36,7 +36,7 @@ orderForm.addEventListener("submit", function (event) {
     ? "This order NEEDS palletizing."
     : "This order does NOT require palletizing.";
 
-  // Add style
+  // Style the message
   palletizingMessage.style.color = requiresPalletizing ? "red" : "black";
 
   // Show alert if palletizing is needed
@@ -60,28 +60,30 @@ orderForm.addEventListener("submit", function (event) {
   // Convert productQuantities to an array of [productName, quantity] pairs
   let productsArray = Object.entries(productQuantities);
 
-  // Sort the productsArray in descending order based on quantity
-  productsArray.sort((a, b) => b[1] - a[1]);
+  // **Removed sorting to keep products together as much as possible**
+  // If you still want to sort, consider sorting by name or another criterion
+  // productsArray.sort((a, b) => b[1] - a[1]);
 
   // Create an array to represent the current stack
-  const currentStack = [];
+  let currentStack = [];
   let totalCasesInStack = 0;
 
-  // Loop through the sorted product quantities and plan the stacks
+  // Loop through the products and plan the stacks
   productsArray.forEach(([productName, quantity]) => {
     while (quantity > 0) {
-      // Check if adding this product will exceed the maximum cases per stack
-      if (totalCasesInStack + quantity <= 6) {
+      const remainingSpace = 6 - totalCasesInStack;
+
+      if (quantity <= remainingSpace) {
+        // If the entire quantity fits into the current stack
         currentStack.push({ product: productName, cases: quantity });
         totalCasesInStack += quantity;
         quantity = 0;
       } else {
-        // If adding the product exceeds the maximum cases, start a new stack
-        const casesToAdd = 6 - totalCasesInStack;
-        if (casesToAdd > 0) {
-          currentStack.push({ product: productName, cases: casesToAdd });
-          quantity -= casesToAdd;
-          totalCasesInStack += casesToAdd;
+        // If only part of the quantity fits, split the product
+        if (remainingSpace > 0) {
+          currentStack.push({ product: productName, cases: remainingSpace });
+          quantity -= remainingSpace;
+          totalCasesInStack += remainingSpace;
         }
 
         // Push the current stack to plannedStacks
@@ -90,7 +92,7 @@ orderForm.addEventListener("submit", function (event) {
         totalCases += plannedStacks[plannedStacks.length - 1].reduce((sum, item) => sum + item.cases, 0);
 
         // Reset current stack and cases count for the new stack
-        currentStack.length = 0;
+        currentStack = [];
         totalCasesInStack = 0;
       }
     }
@@ -109,8 +111,8 @@ orderForm.addEventListener("submit", function (event) {
   // Update the display of total cases and stacks
   updateDisplay();
 
-  // Optionally, reset the form after submission
-  orderForm.reset();
+  // **Do not reset the form to keep the data visible**
+  // orderForm.reset(); // Commented out to retain form data for verification
 });
 
 // Function to render the planned stacks in the UI
@@ -121,6 +123,7 @@ function renderPlannedStacks() {
   // Iterate over plannedStacks and create DOM elements
   plannedStacks.forEach((stack, index) => {
     const stackLi = document.createElement("li");
+    stackLi.classList.add("stack");
     stackLi.setAttribute("data-index", index); // Set data attribute for reference
 
     // Create a list of products for each stack
@@ -199,7 +202,7 @@ function clearFormAndStacks() {
   updateDisplay();
 }
 
-// Add a click event listener to the clear button
+// Add a click event listener to the "Clear All" button
 clearButton.addEventListener("click", function () {
   // Display a confirmation dialog
   const isConfirmed = confirm("Are you sure you want to clear the form and stacks?");
@@ -210,36 +213,23 @@ clearButton.addEventListener("click", function () {
   }
 });
 
-// Add a click event listener to the clear stacks button
+// Function to clear only the planned stacks
+function clearStacks() {
+  plannedStacks = [];
+  totalStacks = 0;
+  totalCases = 0;
+  productListElement.innerHTML = "";
+  updateDisplay();
+}
+
+// Add a click event listener to the "Clear Stacks" button
 clearStacksButton.addEventListener("click", function () {
   // Display a confirmation dialog
   const isConfirmed = confirm("Are you sure you want to clear the planned stacks?");
   
   // Check if the user confirmed
   if (isConfirmed) {
-    // Clear the planned stacks
-    plannedStacks.length = 0;
-
-    // Clear the productList element
-    productListElement.innerHTML = "";
-
-    // Reset total stacks and total cases
-    totalStacks = 0;
-    totalCases = 0;
-
-    // Update the display
-    updateDisplay();
-  }
-});
-
-// Function for autofill to go down the list 
-document.addEventListener('input', function (e) {
-  if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'number') {
-    var inputs = Array.from(document.querySelectorAll('input[type="number"]'));
-    var index = inputs.indexOf(e.target);
-    if (index > -1 && index < inputs.length - 1) {
-      inputs[index + 1].focus();
-    }
+    clearStacks();
   }
 });
 
@@ -299,4 +289,42 @@ applyMissingCasesButton.addEventListener("click", function () {
   missingCasesInput.value = 0;
 
   alert(`Successfully subtracted ${missingCasesValue} missing cases from the remaining stacks.`);
+});
+
+// =====================
+// Autofill with Delay
+// =====================
+
+// Function to delay the focus shift for double digits
+function focusNextInputWithDelay(inputElement, delay = 300) {
+  let timer;
+
+  // Add event listener for input
+  inputElement.addEventListener('input', function (e) {
+    const inputs = Array.from(document.querySelectorAll('input[type="number"]'));
+    const index = inputs.indexOf(e.target);
+
+    // Clear any existing timer to avoid multiple focus shifts
+    clearTimeout(timer);
+
+    // Only proceed if the current input is valid and part of the inputs array
+    if (index > -1 && index < inputs.length - 1) {
+      // Set a delay before moving focus
+      timer = setTimeout(() => {
+        // Check if the user has typed more digits than a single one before moving
+        if (
+          e.target.value.length >= 2 ||
+          e.target.valueAsNumber >= 10 ||
+          e.target.value === ''
+        ) {
+          inputs[index + 1].focus();
+        }
+      }, delay);
+    }
+  });
+}
+
+// Apply focusNextInputWithDelay to all input fields on the page
+document.querySelectorAll('input[type="number"]').forEach((input) => {
+  focusNextInputWithDelay(input);
 });
