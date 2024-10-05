@@ -12,17 +12,20 @@
 <body>
     <img src="milk_img.png" alt="milk-img" id="milk-img">
     <h1>Nesredna Dairy Stack Planner</h1>
-    <p id="sub-title">(also, there's a spreadsheet, so, you can calculate anything else related to milk orders, too.)</p>
+    <p id="sub-title">(also, there's a spreadsheet, so you can calculate anything else related to milk orders, too.)</p>
 
-    <button onclick="window.open('https://docs.google.com/spreadsheets/d/1oXbK6tAIXpTfpfc7Z-mk637kh_Dd8Hu3kdFfT7Hs5pc/edit#gid=0', '_blank')">Calculator for other milk order info</button>
-    <a href="game.html" id="link">I'm bored</a>
+    <button onclick="window.open('https://docs.google.com/spreadsheets/d/1oXbK6tAIXpTfpfc7Z-mk637kh_Dd8Hu3kdFfT7Hs5pc/edit#gid=0', '_blank')">Calculator for Other Milk Order Info</button>
+    
+    <div>
+        <a href="game.html" id="link">I'm bored</a>
+    </div>
 
     <form id="orderForm">
         <div id="orderNumberContainer">
             <label for="orderNumber">Order Number:</label>
             <input type="text" id="orderNumber" name="orderNumber">
         </div>
-        <!-- Table for Products -->
+        
         <div class="table-responsive">
             <table>
                 <thead>
@@ -32,9 +35,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th colspan="2">Organic</th>
-                    </tr>
+                    <tr><th colspan="2">Organic</th></tr>
                     <tr>
                         <td>Organic Whole Milk</td>
                         <td><input type="number" name="Organic Whole Milk" min="0" autocomplete="off" pattern="[0-9]*" inputmode="numeric"></td>
@@ -43,9 +44,7 @@
                         <td>Organic 2% Milk</td>
                         <td><input type="number" name="Organic 2% Milk" min="0" autocomplete="off" pattern="[0-9]*" inputmode="numeric"></td>
                     </tr>
-                    <tr>
-                        <th colspan="2">Winco Milk</th>
-                    </tr>
+                    <tr><th colspan="2">Winco Milk</th></tr>
                     <tr>
                         <td>Winco Whole Milk</td>
                         <td><input type="number" name="Winco Whole Milk" min="0" autocomplete="off" pattern="[0-9]*" inputmode="numeric"></td>
@@ -67,12 +66,10 @@
                         <td><input type="number" name="Winco Chocolate Milk" min="0" autocomplete="off" pattern="[0-9]*" inputmode="numeric"></td>
                     </tr>
                     <tr>
-                        <td>Winco Chocolate Milk 1/2 gallon</td>
-                        <td><input type="number" name="Winco Chocolate Milk 1/2 gallon" min="0" autocomplete="off" pattern="[0-9]*" inputmode="numeric"></td>
+                        <td>Winco Chocolate Milk 1/2 Gallon</td>
+                        <td><input type="number" name="Winco Chocolate Milk 1/2 Gallon" min="0" autocomplete="off" pattern="[0-9]*" inputmode="numeric"></td>
                     </tr>
-                    <tr>
-                        <th colspan="2">Juice</th>
-                    </tr>
+                    <tr><th colspan="2">Juice</th></tr>
                     <tr>
                         <td>Apple Juice</td>
                         <td><input type="number" name="Apple Juice" min="0" autocomplete="off" inputmode="numeric"></td>
@@ -109,9 +106,7 @@
                         <td>Tea</td>
                         <td><input type="number" name="Tea" min="0" autocomplete="off" inputmode="numeric"></td>
                     </tr>
-                    <tr>
-                        <th colspan="2">Andy Milk</th>
-                    </tr>
+                    <tr><th colspan="2">Andy Milk</th></tr>
                     <tr>
                         <td>Andy Whole Milk</td>
                         <td><input type="number" name="Andy Whole Milk" min="0" autocomplete="off" inputmode="numeric"></td>
@@ -128,45 +123,38 @@
                         <td>Andy Non-fat Milk</td>
                         <td><input type="number" name="Andy Non-fat Milk" min="0" autocomplete="off" inputmode="numeric"></td>
                     </tr>
-                    <tr>
-                        <th colspan="2">Dairy Gold</th>
-                    </tr>
+                    <tr><th colspan="2">Dairy Gold</th></tr>
                     <tr>
                         <td>Dairy Gold Chocolate Milk</td>
                         <td><input type="number" name="Dairy Gold Chocolate Milk" min="0" autocomplete="off" inputmode="numeric"></td>
                     </tr>
                     <tr>
-                        <td>Dairy Gold 1/2 gallon Chocolate Milk</td>
-                        <td><input type="number" name="Dairy Gold 1/2 gallon Chocolate Milk" min="0" autocomplete="off" inputmode="numeric"></td>
+                        <td>Dairy Gold 1/2 Gallon Chocolate Milk</td>
+                        <td><input type="number" name="Dairy Gold 1/2 Gallon Chocolate Milk" min="0" autocomplete="off" inputmode="numeric"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <!-- Submit/Clear Buttons -->
+        
         <div class="button-group">
             <button type="submit" id="submitButton">Submit</button>
             <button type="button" id="clearButton">Clear All</button>
         </div>
     </form>
-    <!-- Background image because it's the holiday season! :) -->
-    <!-- <img src="christmas-background-with-falling-snow_275806-1176.webp" alt="snow-picture" class="snow-background"> -->
 
     <div id="generatedList">
         <p id="palletizingMessage"></p>
         <div id="stacksLeftContainer">Total Stacks Left to Grab: <span id="stacksLeft">0</span></div>
         <div id="totalCasesContainer">Total Cases: <span id="totalCases">0</span></div>
         <button id="clearStacksButton">Clear Stacks</button>
-
         <ul id="productList"></ul>
     </div>
-    
 
     <p id="copyright-year"></p>
     <script>
         const currentYear = new Date().getFullYear();
-        document.getElementById('copyright-year').innerHTML = '&copy;' + currentYear + '- Jared Nash';
+        document.getElementById('copyright-year').innerHTML = '&copy; ' + currentYear + ' - Jared Nash';
     </script>
-
     <script src="script.js"></script>
 </body>
 </html>

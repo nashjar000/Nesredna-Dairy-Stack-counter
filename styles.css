@@ -7,244 +7,98 @@ body, h1, form {
 /* Basic mobile-responsive styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #C59C6C;
+    background-color: #f4f4f4;
     color: #333;
     padding: 20px;
-    font-size: 16px;
-    line-height: 1.5;
+    text-align: center;
 }
 
 h1 {
-    font-size: 2rem; /* 32px */
-    text-align: center;
-    margin-bottom: 20px;
+    font-size: 2.5em;
+    color: #4a90e2;
 }
 
 #sub-title {
-    text-align: center;
-    font-size: 1rem; /* 16px */
+    font-size: 1.2em;
+    color: #666;
 }
 
-.snow-background {
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    position: fixed;
-    z-index: -1;
-    height: 100%;
-}
-
-#milk-img {
-    width: 100%;
-    max-width: 200px; /* Ensure it doesn't exceed original size */
-    height: auto;
-    display: block;
-    margin: 20px auto 0 auto;
-}
-
-/* Adjust image size on mobile */
-@media (max-width: 768px) {
-    #milk-img {
-        max-width: 150px;
-        margin-top: 10px;
-    }
-}
-
-form {
-    background-color: #fff;
-    border: 1px solid #ccc;
+button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1em;
+    cursor: pointer;
     border-radius: 5px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    transition: background-color 0.3s ease;
 }
 
-#orderNumberContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+button:hover {
+    background-color: #357ab8;
+}
+
+/* Table styling */
+.table-responsive {
+    overflow-x: auto;
+    margin: 20px 0;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 15px;
-}
-
-.table-responsive {
-    width: 100%;
-    overflow-x: auto;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-    white-space: nowrap;
+    background: #fff;
 }
 
 th, td {
+    border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
-    font-size: 0.9rem; /* 14.4px */
 }
 
-/* Adjust Typography on Mobile */
-@media (max-width: 768px) {
-    body {
-        padding: 10px;
-        font-size: 14px;
-    }
-
-    h1 {
-        font-size: 1.5rem; /* 24px */
-    }
-
-    #sub-title {
-        font-size: 0.9rem; /* 12.6px */
-    }
-
-    table th, table td {
-        font-size: 0.8rem; /* 12.8px */
-    }
-
-    form {
-        padding: 10px;
-    }
+th {
+    background-color: #4a90e2;
+    color: white;
 }
 
-button {
-    display: block;
-    width: 100%;
-    padding: 12px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
+input[type="number"] {
+    width: 80%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
 }
 
-button:hover {
-    background-color: #0056b3;
-}
-
-button:active {
-    background-color: #004494;
-}
-
-#clearButton, #clearStacksButton {
-    background-color: #dc3545;
-}
-
-#clearButton:hover, #clearStacksButton:hover {
-    background-color: #c82333;
-}
-
-#clearButton:active, #clearStacksButton:active {
-    background-color: #bd2130;
-}
-
-#applyMissingCasesButton {
-    background-color: #28a745;
-}
-
-#applyMissingCasesButton:hover {
-    background-color: #218838;
-}
-
-#applyMissingCasesButton:active {
-    background-color: #1e7e34;
-}
-
-.grab-button {
-    background-color: #ffc107;
-    color: #212529;
-}
-
-.grab-button:hover {
-    background-color: #e0a800;
-}
-
-.grab-button:active {
-    background-color: #c69500;
-}
-
+/* Container for total stacks */
 #generatedList {
     margin-top: 20px;
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ccc;
+    padding: 15px;
     border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-#scanDocumentButton {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-/* Media query for mobile devices */
-@media (max-width: 768px) {
-    button {
-        font-size: 0.875rem; /* 14px */
-    }
-
-    .button-group {
-        flex-direction: column;
-    }
-}
-
-/* Link Styles */
-#link {
-    text-decoration: none;
-    color: #28a745;
-}
-
-#link:hover, #link:focus {
-    text-decoration: underline;
-    color: #218838;
-}
-
-/* Focus States for Accessibility */
-input:focus, button:focus {
-    outline: 3px solid #80bdff;
-    outline-offset: 2px;
-}
-
-/* Stack Card Styles */
-.stack-card {
-    border: 2px solid #ccc;
-    padding: 10px;
+#stacksLeftContainer,
+#totalCasesContainer {
+    font-size: 1.2em;
     margin: 10px 0;
-    border-radius: 10px;
-    background-color: #f9f9f9;
 }
 
-.product-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
+#clearStacksButton {
+    margin-top: 10px;
+    background-color: #e94e77;
 }
 
-.product-item span {
-    font-size: 16px;
+#clearStacksButton:hover {
+    background-color: #d83960;
 }
 
-.stack-card h2 {
-    text-align: center;
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #333;
+/* Styles for the milk image */
+#milk-img {
+    width: 150px;
+    margin: 0 auto 20px;
+}
+
+.button-group {
+    margin-top: 20px;
 }
