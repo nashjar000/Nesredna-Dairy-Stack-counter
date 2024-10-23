@@ -11,7 +11,7 @@
 </head>
 <body>
     <img src="milk_img.png" alt="milk-img" id="milk-img">
-    <h1>Nesredna Dairy Stack Planner</h1>
+    <h1>Stack Planner</h1>
     <p id="sub-title">(also, there's a spreadsheet, so you can calculate anything else related to milk orders, too.)</p>
 
     <button onclick="window.open('https://docs.google.com/spreadsheets/d/1oXbK6tAIXpTfpfc7Z-mk637kh_Dd8Hu3kdFfT7Hs5pc/edit#gid=0', '_blank')">Calculator for Other Milk Order Info</button>
@@ -24,6 +24,18 @@
         <div id="orderNumberContainer">
             <label for="orderNumber">Order Number:</label>
             <input type="text" id="orderNumber" name="orderNumber">
+        </div>
+
+        <div id="stackHeightContainer">
+            <label for="stackHeight">Stack Height:</label>
+            <select id="stackHeight" name="stackHeight">
+                <option value="6" selected>6 Cases</option>
+                <option value="5">5 Cases</option>
+                <option value="4">4 Cases</option>
+                <option value="3">3 Cases</option>
+                <option value="2">2 Cases</option>
+                <option value="1">1 Case</option>
+            </select>
         </div>
         
         <div class="table-responsive">
@@ -140,6 +152,9 @@
             <button type="submit" id="submitButton">Submit</button>
             <button type="button" id="clearButton">Clear All</button>
         </div>
+
+            <!-- <button id="undoBtn">Undo</button> -->
+            <!-- <button id="redoBtn">Redo</button> -->
     </form>
 
     <div id="generatedList">
