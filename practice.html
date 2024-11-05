@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Stacking</title>
+  <style>
+    .stack {
+      list-style: none;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .stack li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Order Stacking</h1>
+
+  <form id="orderForm">
+    <label for="orderNumber">Order number:</label>
+    <input type="text" id="orderNumber" name="orderNumber" required>
+
+    <label for="stackHeight">Stack height (cases):</label>
+    <input type="number" id="stackHeight" name="stackHeight" min="1" value="6">
+
+    <fieldset>
+      <legend>Products</legend>
+      <label for="wholeMilk">Whole Milk:</label>
+      <input type="number" id="wholeMilk" name="Whole Milk" min="0" value="0">
+      <br>
+      <label for="twoPercentMilk">2% Milk:</label>
+      <input type="number" id="twoPercentMilk" name="2% Milk" min="0" value="0">
+      <br>
+      <label for="onePercentMilk">1% Milk:</label>
+      <input type="number" id="onePercentMilk" name="1% Milk" min="0" value="0">
+      <br>
+      <label for="skimMilk">Skim Milk:</label>
+      <input type="number" id="skimMilk" name="Skim Milk" min="0" value="0">
+    </fieldset>
+
+    <button type="submit">Plan Stacks</button>
+  </form>
+
+  <p id="palletizingMessage"></p>
+
+  <h2>Planned Stacks</h2>
+  <ul id="productList"></ul>
+
+  <p>Total Stacks: <span id="stacksLeft">0</span></p>
+  <p>Total Cases: <span id="totalCases">0</span></p>
+
+  <button id="clearButton">Clear All</button>
+  <button id="clearStacksButton">Clear Stacks</button>
+
+  <button id="undoButton">Undo</button>
+  <button id="redoButton">Redo</button>
+
+  <script>
+    // Function to check if the order number requires palletizing
+    function checkPalletOrder(orderNumber) {
+      const palletOrderNumbers = ["102", "106", "143", "163", "169"];
+      return palletOrderNumbers.includes(orderNumber);
+    }
+
+    // Get references to DOM elements
+    const orderForm = document.getElementById("orderForm");
+    const palletizingMessage = document.getElementById("palletizingMessage");
+    const productListElement = document.getElementById("productList");
+    const clearButton = document.getElementById("clearButton");
+    const clearStacksButton = document.getElementById("clearStacksButton");
+    const stacksLeftElement = document.getElementById("stacksLeft");
+    const totalCasesElement = document.getElementById("totalCases");
+    const stackHeightInput = document.getElementById("stackHeight");
+    let undoStack = [];
+    let redoStack = [];
+
+    // Counters for the total stacks and cases
+    let totalStacks = 0;
+    let totalCases = 0;
+
+    // Array to store planned stacks
+    let plannedStacks = [];
+
+    // Add a submit event listener to the form
+    orderForm.addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent the form from submitting
+
+      // Get the order number from the input field
+      const orderNumberInput = document.getElementById("orderNumber");
+      const orderNumber = orderNumberInput.value.trim();
+
+      // Check if the order requires palletizing
+      const requiresPalletizing = checkPalletOrder(orderNumber);
+
+      // Display palletizing message
+      palletizingMessage.textContent = requiresPalletizing
+        ? "This order NEEDS palletizing."
+        : "This order does NOT require palletizing.";
+
+      // Style the message
+      palletizingMessage.style.color = requiresPalletizing ? "red" : "#333";
+
+      // Show alert if palletizing is needed
+      if (requiresPalletizing) {
+        alert("This load needs palletizing!");
+      }
+
+      // Get the desired stack height from the input
+      const stackHeight = parseInt(stackHeightInput.value, 10) || 6; // Default to 6 if invalid
+
+      // Define an object to store product names and their quantities
+      const productQuantities = {};
+
+      // Loop through each input field in the form and store the quantity in the object
+      const inputs = orderForm.querySelectorAll("input[type='number']");
+      inputs.forEach((input) => {
+        const productName = input.name;
+        const quantity = parseInt(input.value, 10) || 0;
+        if (quantity > 0) {
+          productQuantities[productName] = quantity;
+        }
+      });
+
+      // Convert productQuantities to an array of [productName, quantity] pairs
+      const productsArray = Object.entries(productQuantities);
+    }
+
+    )
