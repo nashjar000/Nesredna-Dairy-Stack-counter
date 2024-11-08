@@ -147,14 +147,14 @@
                 </tbody>
             </table>
         </div>
+        <!-- <button id="undoButton">Undo</button>
+        <button id="redoButton">Redo</button> -->
         
         <div class="button-group">
             <button type="submit" id="submitButton">Submit</button>
             <button type="button" id="clearButton">Clear All</button>
         </div>
 
-            <!-- <button id="undoButton">Undo</button>
-            <button id="redoButton">Redo</button> -->
     </form>
 
     <div id="generatedList">
@@ -164,6 +164,20 @@
         <button id="clearStacksButton">Clear Stacks</button>
         <ul id="productList"></ul>
     </div>
+
+    <h1>Block and Line Checker</h1>
+    <p>**Note: work in progress**</p>
+    <label for="totalCarts">Total Carts:</label>
+    <input type="number" id="totalCarts" placeholder="Enter total number of carts"><br>
+    <label for="minHeight">Minimum Case Height:</label>
+    <select id="minHeight">
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select><br>
+    <button onclick="calculateBlockOrLine()">Check Feasibility</button>
+
+    <h2>Results:</h2>
+    <div id="results"></div>
 
     <p id="copyright-year"></p>
     <script>
