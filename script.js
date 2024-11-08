@@ -177,13 +177,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   clearButton.addEventListener("click", () => {
     if (confirm("Are you sure you want to clear the form and stacks?")) {
+      // Reset all variables
       plannedStacks = [];
       undoStack = [];
       redoStack = [];
-      renderPlannedStacks();
-      updateDisplay();
+      totalStacks = 0;
+      totalCases = 0;
+  
+      // Clear form input values
+      const inputs = orderForm.querySelectorAll("input[type='number']");
+      inputs.forEach(input => input.value = '');
+  
+      // Clear the UI
+      productListElement.innerHTML = "";
+      stacksLeftElement.textContent = "0";
+      totalCasesElement.textContent = "0";
+      palletizingMessage.textContent = "";
+  
+      // Clear other relevant UI elements if necessary
+      document.getElementById("results").innerText = "";
     }
   });
+  
 
   clearStacksButton.addEventListener("click", () => {
     if (confirm("Are you sure you want to clear the planned stacks?")) {
