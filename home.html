@@ -38,16 +38,19 @@
             </select>
         </div>
 
-        <div id="badDateChecker">
-            <label for="badDate">Bad Date (less than 11 days):</label>
-            <input type="date" id="badDate" name="badDate" readonly>
+        <div id="shipDateChecker">
+            <label for="shipDate">Ship Date:</label>
+            <input type="date" id="shipDate" name="shipDate">
+            <label for="futureDate">Date in 11 Days (anything less than this is bad):</label>
+            <input type="date" id="futureDate" name="futureDate" readonly>
             <script>
-                const today = new Date();
-                const badDate = new Date(today.setDate(today.getDate() + 11));
-                document.getElementById("badDate").valueAsDate = badDate;
+                document.getElementById("shipDate").addEventListener("change", function() {
+                    const shipDate = new Date(this.value);
+                    const futureDate = new Date(shipDate.setDate(shipDate.getDate() + 11));
+                    document.getElementById("futureDate").valueAsDate = futureDate;
+                });
             </script>
         </div>
-        
         <div class="table-responsive">
             <table>
                 <thead>
