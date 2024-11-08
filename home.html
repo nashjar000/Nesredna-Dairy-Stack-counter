@@ -37,6 +37,16 @@
                 <option value="1">1 Case</option>
             </select>
         </div>
+
+        <div id="badDateChecker">
+            <label for="badDate">Bad Date (less than 11 days):</label>
+            <input type="date" id="badDate" name="badDate" readonly>
+            <script>
+                const today = new Date();
+                const badDate = new Date(today.setDate(today.getDate() + 11));
+                document.getElementById("badDate").valueAsDate = badDate;
+            </script>
+        </div>
         
         <div class="table-responsive">
             <table>
