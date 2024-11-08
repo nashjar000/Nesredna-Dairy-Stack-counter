@@ -37,17 +37,30 @@
                 <option value="1">1 Case</option>
             </select>
         </div>
-
         <div id="shipDateChecker">
             <label for="shipDate">Ship Date:</label>
             <input type="date" id="shipDate" name="shipDate">
             <label for="futureDate">Date in 11 Days (anything older is bad):</label>
             <input type="date" id="futureDate" name="futureDate" readonly>
+            <label for="checkDate">Check Date:</label>
+            <input type="date" id="checkDate" name="checkDate">
+            <p id="checkDateMessage"></p>
             <script>
                 document.getElementById("shipDate").addEventListener("change", function() {
                     const shipDate = new Date(this.value);
                     const futureDate = new Date(shipDate.setDate(shipDate.getDate() + 11));
                     document.getElementById("futureDate").valueAsDate = futureDate;
+                });
+                document.getElementById("checkDate").addEventListener("change", function() {
+                    const checkDate = new Date(this.value);
+                    const futureDate = new Date(document.getElementById("futureDate").valueAsDate);
+                    if (checkDate < futureDate) {
+                        alert("Warning: The milk is bad!");
+                        document.getElementById("checkDate").style.backgroundColor = "lightred";
+                    } else {
+                        document.getElementById("checkDateMessage").textContent = "";
+                        document.getElementById("checkDate").style.backgroundColor = "lightgreen";
+                    }
                 });
             </script>
         </div>
